@@ -1,0 +1,44 @@
+<!-- 侧边栏-->
+<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo"
+    style="margin-right: 10px;border-top-left-radius:0;border-top-right-radius:0;height: 94vh;position: fixed;top:60px">
+    <li class="layui-nav-item">
+        <a href="javascript:;">一食堂</a>
+        <dl class="layui-nav-child">
+            <dd><a href="javascript:;" class="ct11">隆江猪脚饭</a></dd>
+            <dd><a href="javascript:;" class="noddle">今日份小面</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item">
+        <a href="javascript:;">二食堂</a>
+        <dl class="layui-nav-child">
+            <dd><a href="">一窗口</a></dd>
+            <dd><a href="">二窗口</a></dd>
+        </dl>
+    </li>
+    <li class="layui-nav-item letter"><a href="/user/doletter">提建议</a></li>
+</ul>
+
+<script>
+
+    var ct11 = document.querySelector('.ct11');
+    ct11.addEventListener('click', function () {
+        $.ajax({
+            type: "post",
+            url: '/user/canteen11',
+            success: function (res) {
+                window.location.href = '/user/docanteen11';
+            }
+        })
+    })
+
+    var noddle=document.querySelector('.noddle');
+    noddle.addEventListener('click',function(){
+        $.ajax({
+            type:'post',
+            url:'/user/donoddle',
+            success:function(res){
+                window.location.href='/user/noddle'
+            }
+        })
+    })
+</script>

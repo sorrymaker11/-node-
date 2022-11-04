@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收件箱</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+</head>
+<style>
+    .show {
+
+        width: auto;
+        position: fixed;
+        left: 200px;
+        top: 100px;
+        width: 1300px;
+    }
+</style>
+
+<body>
+
+    {{include '../common/adminheader.html'}}
+    {{include '../common/admincebian.html'}}
+    <div class="show">
+
+        <div class="layui-bg-gray" style="padding: 30px;">
+            <div class="layui-row layui-col-space15">
+                {{each lookletter.data}}
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">{{$value.username}}</div>
+                        <div class="layui-card-body">
+                            {{$value.letter}}
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

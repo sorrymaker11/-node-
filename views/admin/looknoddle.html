@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一食堂一窗口</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+</head>
+<style>
+    .show {
+        width: auto;
+        position: fixed;
+        left: 200px;
+    }
+
+    .list {
+        margin-top: 10vh;
+    }
+
+    .list>h2 {
+        text-align: center;
+        color: gold;
+    }
+
+    .list>div:nth-child(1) {
+        margin-left: 40vw;
+        position: relative;
+    }
+
+    .pj {
+        position: absolute;
+        top: 12px;
+        left: -40px;
+    }
+</style>
+
+<body>
+
+    {{include '../common/adminheader.html'}}
+    {{include '../common/admincebian.html'}}
+    <show class="show">
+        <div class="list">
+
+            <h2>欢迎访问今日份小面</h2>
+            <button class="layui-btn layui-btn-sm  editfood" lay-event="getCheckData">编辑选中菜品</button>
+            <button class="layui-btn layui-btn-sm  addfood">增加菜品</button>
+
+            <table class="layui-table"
+                lay-data="{width:1335,height:500, data:[{{each looknoddle.data}} {{$value}}, {{/each}}],page:true, id:'idTest'}"
+                lay-filter="demo">
+                <thead>
+                    <tr>
+                        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+                        <th lay-data="{field:'id',width:100}">id</th>
+                        <th lay-data="{field:'name',width:360}">菜名</th>
+                        <th lay-data="{field:'price', width:342}">价格 (元)</th>
+                        <th lay-data="{field:'type', width:340}">类型</th>
+                        <th lay-data="{fixed: 'right', width:138, align:'center', toolbar: '#barDemo'}">操作</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </show>
+
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-danger layui-btn-xs del" lay-event="del">删除</a>
+    </script>
+
+
+    <script>
+
+        // 编辑选中的菜品
+        var editfood = document.querySelector('.editfood');
+        editfood.addEventListener('click', function () {
+            var table = layui.table;
+            var checkStatus = table.checkStatus('idTest');
+            var data = checkStatus.data;
+            var food = [];
+            for (i = 0; i < data.length; i++) {
+                var value = { name: data[i].name, type: data[i].type, price: data[i].price }
+                food.push(value)
+            }
+            $.ajax({
+                type: "post",
+                url: '/adminuser/doeditnoddle',
+                data: {
+                    id: data[0].id,
+                    name: data[0].name,
+                    price: data[0].price,
+                    type: data[0].type,
+                },
+                success: function (res) {
+                    window.location.href = '/adminuser/editnoddle';
+                    // console.log(res);
+                }
+            })
+        })
+
+
+        // 增加菜品
+        var addfood = document.querySelector('.addfood');
+        addfood.addEventListener('click', function () {
+            window.location.href = '/adminuser/addnoddle'
+        })
+
+
+        // 删除菜品
+        layui.use('table', function () {
+            var table = layui.table;
+            //监听工具条
+            table.on('tool(demo)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'del') {
+                    obj.del();
+                    $.ajax({
+                        type: 'post',
+                        url: '/adminuser/delnoddle',
+                        data: {
+                            name: data.name
+                        },
+                        success: function (res) {
+                            alert(res);
+                            window.location.href='/adminuser/looknoddle'
+                        }
+                    })
+                }
+            });
+        })
+
+        
+        // 自刷新
+        $.ajax({
+            type: "post",
+            url: '/adminuser/dolooknoddle',
+            success: function (res) {
+            }
+        })
+    </script>
+</body>
+
+</html>

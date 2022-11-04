@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<style>
+    .show {
+
+        width: auto;
+        position: fixed;
+        left: 200px;
+        top: 100px;
+        width: 1300px;
+    }
+
+    .show textarea {
+        background-color: aqua;
+    }
+</style>
+
+<body>
+    {{include '../common/header.html'}}
+    {{include '../common/cebian.html'}}
+    <div class="show">
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">原密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" autocomplete="off" placeholder="请输入原密码" class="layui-input Input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" autocomplete="off" placeholder="请输入修改后的密码"
+                        class="layui-input Input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">新密码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" autocomplete="off" placeholder="请确认修改后的密码"
+                        class="layui-input Input">
+                </div>
+            </div>
+        </form>
+
+        <button type="button" class="layui-btn layui-btn-normal Btn" style="margin-left:40vw ;">确定</button>
+    </div>
+
+</body>
+<script>
+
+    var Btn = document.querySelector('.Btn');
+    Btn.addEventListener('click', function () {
+        var Input = document.querySelectorAll('.Input');
+        if (Input[0].value.trim().length == 0 || Input[1].value.trim().length == 0 || Input[2].value.trim().length == 0) {
+            alert('输入不能为空');
+        }
+        else if (Input[1].value != Input[2].value) {
+            alert('两次密码不一致，请重试');
+        }
+        else if (Input[0].value == Input[1].value) {
+            alert('原密码不能与新密码相同');
+        }
+        else (
+            $.ajax({
+                type: 'post',
+                url: '/user/doedit',
+                data: {
+                    oldpassword: Input[0].value,
+                    newpassword: Input[1].value,
+                },
+                success: function (res) {
+                    alert(res);
+                    if (res == '修改成功') {
+                        window.location.href = '/user/domain'
+                    }
+                }
+            })
+        )
+    })
+</script>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background: url(/back.jpg) no-repeat;
+            background-size: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .register {
+            width: 400px;
+            height: 377px;
+            margin: auto;
+            background-color: rgb(255, 255, 255, 0.8);
+        }
+
+        .register-header {
+            background-color: rgb(51, 122, 183, 0.8);
+            width: 100%;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .register-mid label {
+            margin-left: 5%;
+        }
+
+        .register-mid input {
+            width: 90%;
+            margin-left: 5%;
+        }
+
+        .register-footer {
+            background-color: rgb(245, 245, 245, 0.6);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .register-footer a {
+            margin-left: 5%;
+        }
+
+        .register-footer button {
+            margin-right: 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register">
+        <div class="register-header">注册</div>
+        <div class="register-mid">
+            <div class="form-group">
+                <label for="input1">用户名：</label>
+                <input type="text" class="form-control" id="input1" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label for="input2">密码：</label>
+                <input type="password" class="form-control" id="input2" placeholder="请输入密码">
+            </div>
+            <div class="form-group">
+                <label for="input3">确认密码：</label>
+                <input type="password" class="form-control" id="input3" placeholder="请确认密码">
+            </div>
+        </div>
+        <div class="register-footer">
+            <a href="/user/dologin">马上登陆</a>
+            <button type="button" class="btn btn-primary">注册</button>
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    var input = document.querySelectorAll('input');
+    var button = document.querySelector('button');
+
+
+    button.addEventListener('click', function () {
+        username = input[0].value;
+        password = input[1].value;
+        if (username.trim().length == 0 || password.trim().length == 0) {
+            alert('用户名或密码不能为空')
+            return;
+        }
+        else if (input[1].value != input[2].value) {
+            alert('两次密码不一致，请重试');
+            return;
+        }
+        else {
+            $.ajax({
+                type: "post",
+                url: '/user/register',
+                data: {
+                    username: username,
+                    password: password
+                },
+                success: function (res) {
+                    alert('注册成功,请登录')
+                    window.location.href = '/user/dologin';
+                },
+                error: function () {
+                    alert('用户名已存在')
+                }
+            })
+        }
+    })
+</script>

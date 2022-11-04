@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增加菜品</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+</head>
+<style>
+    .show {
+        width: 1000px;
+        text-align: center;
+        margin: auto;
+        background-color: rgb(222, 225, 230);
+    }
+</style>
+
+<body>
+    {{include '../common/adminheader.html'}}
+    {{include '../common/admincebian.html'}}
+    <div class="show">
+        <div style="margin-bottom:20px;color:blue">
+            <h2>增加菜品</h2>
+        </div>
+        <div>
+            <div class="layui-form-item" style="margin-right:40px;">
+                <label class="layui-form-label">菜名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入菜名"
+                        class="layui-input data">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-right:40px;">
+                <label class="layui-form-label">价格</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入价格"
+                        class="layui-input data">
+                </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-right:40px;padding-bottom: 20px;">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入类型"
+                        class="layui-input data">
+                </div>
+            </div>
+            <div>
+                <button type="button" class="layui-btn layui-btn-warm btn">确认增加</button>
+                <button type="button" class="layui-btn layui-btn-danger back">返回</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 返回
+        var back = document.querySelector('.back');
+        back.addEventListener('click', function () {
+            window.location.href = '/adminuser/lookcanteen11';
+        })
+
+
+        // 提交数据
+        var data = document.querySelectorAll('.data');
+        var btn = document.querySelector('.btn');
+        btn.addEventListener('click', function () {
+            console.log(data[0].value);
+            $.ajax({
+                type: 'post',
+                url: '/adminuser/addfood',
+                data: {
+                    name: data[0].value,
+                    price: data[1].value,
+                    type: data[2].value
+                },
+                success: function (res) {
+                    alert(res);
+                    window.location.href = '/adminuser/lookcanteen11'
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .show {
+        width: auto;
+        position: fixed;
+        left: 200px;
+        width: 1000px;
+    }
+</style>
+
+<body>
+
+    {{include '../common/adminheader.html'}}
+    {{include '../common/admincebian.html'}}
+    <div class="show">
+        <div style="margin-left: 10vw;">
+            <div class="input-group flex-nowrap">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="addon-wrapping">id</span>
+                </div>
+                <input type="text" class="form-control data" value="{{editfood.id}}" readonly='true'
+                    aria-describedby="addon-wrapping">
+            </div>
+            <div class="input-group flex-nowrap">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="addon-wrapping">菜名</span>
+                </div>
+                <input type="text" class="form-control data" value="{{editfood.name}}" aria-label="Username"
+                    aria-describedby="addon-wrapping">
+            </div>
+            <div class="input-group flex-nowrap">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="addon-wrapping">价格</span>
+                </div>
+                <input type="text" class="form-control data" value="{{editfood.price}}" aria-label="Username"
+                    aria-describedby="addon-wrapping">
+            </div>
+            <div class="input-group flex-nowrap">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="addon-wrapping">类型</span>
+                </div>
+                <input type="text" class="form-control data" value="{{editfood.type}}" aria-label="Username"
+                    aria-describedby="addon-wrapping">
+            </div>
+
+            <button type="button" class="layui-btn layui-btn-normal edit">确认修改</button>
+            <button type="button" class="layui-btn layui-btn-danger back">返回</button>
+        </div>
+    </div>
+
+    <script>
+
+        // 返回
+        var back=document.querySelector('.back');
+        back.addEventListener('click',function(){
+            window.location.href='/adminuser/lookcanteen11';
+        })
+
+        // 提交编辑数据
+        var edit = document.querySelector('.edit');
+        edit.addEventListener('click', function () {
+            var data = document.querySelectorAll('.data');
+            $.ajax({
+                type: 'post',
+                url: '/adminuser/toeditfood',
+                data: {
+                    id:data[0].value,
+                    name: data[1].value,
+                    price: data[2].value,
+                    type: data[3].value
+                },
+                success: function (res) {
+                    alert(res);
+                    window.location.href='/adminuser/lookcanteen11';
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

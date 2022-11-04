@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信箱</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+</head>
+<style>
+    .show {
+
+        width: auto;
+        position: fixed;
+        left: 200px;
+        top: 100px;
+        width: 1300px;
+    }
+
+    .show textarea {
+        background-color: aqua;
+    }
+</style>
+
+<body>
+    {{include '../common/header.html'}}
+    {{include '../common/cebian.html'}}
+    <div class="show">
+        <div style="text-align:center;">
+            <h2>收件箱</h2>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <div class="layui-input-block">
+                <textarea placeholder="请输入想说的话" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div style="text-align:center;">
+            <button type="button" class="layui-btn layui-btn-normal submit">提交</button>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    var text = document.querySelector('textarea');
+    var submit=document.querySelector('.submit');
+    submit.addEventListener('click',function(){
+        console.log(text.value);
+        $.ajax({
+            type:'post',
+            url:'/user/letter',
+            data:{
+                letter:text.value,
+            },
+            success:function(res){
+                alert(res);
+            }
+        })
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看订单</title>
+    <link rel="stylesheet" href="/layui/layui.css">
+    <script src="/layui.js"></script>
+    <script src="/jquery.min.js"></script>
+</head>
+
+<style>
+    .show {
+        width: auto;
+        position: fixed;
+        left: 200px;
+        top: 100px;
+    }
+</style>
+
+<body>
+
+    {{include '../common/adminheader.html'}}
+    {{include '../common/admincebian.html'}}
+
+    <div class="show">
+        <div style="text-align:center;">
+            <h2>进行中的订单</h2>
+        </div>
+        <button type="button" class="layui-btn layui-btn-lager layui-btn-normal lookOff">查看已完成的订单</button>
+        <table class="layui-table"
+            lay-data="{width: 1335, height:530, data:[{{each order.data}} {{$value}},{{/each}}], page:true, id:'idTest'}"
+            lay-filter="demo">
+            <thead>
+                <tr>
+                    <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+                    <th lay-data="{field:'id', width:77}">ID</th>
+                    <th lay-data="{field:'username', width:100}">用户名</th>
+                    <th lay-data="{field:'foodname', width:300}">用户选择的菜</th>
+                    <th lay-data="{field:'money', width:100}">付款</th>
+                    <th lay-data="{field:'site', width:300}">地址</th>
+                    <th lay-data="{field:'tel', width:130}">电话</th>
+                    <th lay-data="{field:'remark', width:150}">备注</th>
+
+                    <th lay-data="{fixed: 'right', width:120, align:'center', toolbar: '#barDemo'}">操作</th>
+                </tr>
+            </thead>
+        </table>
+
+        <script type="text/html" id="barDemo">
+        <a class="layui-btn  layui-btn-xs" lay-event="del">完成</a>
+      </script>
+    </div>
+</body>
+<script>
+    // 查看已完成订单
+    var lookOff = document.querySelector('.lookOff');
+    lookOff.addEventListener('click', function () {
+        $.ajax({
+            type: 'post',
+            url: '/adminuser/lookOff',
+            success: function () {
+                window.location.href = '/adminuser/dolookOff'
+            }
+        })
+    })
+
+
+    // 完成订单
+    layui.use('table', function () {
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function (obj) {
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                obj.del();
+                $.ajax({
+                    type: 'post',
+                    url: '/adminuser/off',
+                    data: data,
+                    success: function (res) {
+                        alert(res)
+                    }
+                })
+            }
+        });
+    })
+</script>
+
+</html>
